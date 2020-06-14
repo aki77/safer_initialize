@@ -33,8 +33,10 @@ belongs_to :tenant
 
 scope :active, -> { where(deleted_at: nil) }
 
-safer_initialize -> { !SaferInitialize::Globals.tenant || SaferInitialize::Globals.tenant == tenant }, message: 'Forbidden tenant!'
-safer_initialize -> { active? }, message: 'Not active project!'
+safer_initialize message: 'Forbidden tenant!' do |project|
+  !SaferInitialize::Globals.tenant || SaferInitialize::Globals.tenant == project.tenant
+end
+safer_initialize :active?, message: 'Not active project!'
 
 def active?
   deleted_at.nil?

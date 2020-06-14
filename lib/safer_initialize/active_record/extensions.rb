@@ -4,10 +4,11 @@ module SaferInitialize
       extend ActiveSupport::Concern
 
       class_methods do
-        def safer_initialize(proc, message: 'initialize error')
-          after_initialize -> do
-            if !SaferInitialize::Globals.safe? && !instance_exec(&proc)
-              raise SaferInitialize::Error, message
+        def safer_initialize(filter = nil, message: 'initialize error', &block)
+          after_initialize do |object|
+            unless SaferInitialize::Globals.safe?
+              result = filter ? object.send(filter) : object.instance_exec(object, &block)
+              raise SaferInitialize::Error, message unless result
             end
           end
         end
