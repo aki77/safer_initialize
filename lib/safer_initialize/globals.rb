@@ -1,3 +1,5 @@
+require 'active_support'
+
 module SaferInitialize
   class Globals < ActiveSupport::CurrentAttributes
     attribute :__safe
