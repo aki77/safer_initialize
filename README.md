@@ -70,7 +70,7 @@ In `app/views/projects/index.html.haml`:
   = project.name
 
 - SaferInitialize.with_safe do
-  - current_tenant.projecst.each do |project|
+  - current_tenant.projects.each do |project|
     = project.name
 ```
 
