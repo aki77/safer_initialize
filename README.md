@@ -26,7 +26,7 @@ In `config/initializers/safer_initialize.rb`:
 SaferInitialize::Globals.attribute :tenant
 
 SaferInitialize.configure do |config|
-  config.error_handle = -> (e) { Rails.env.production? ? Bugsnag.notify(e) : raise e } # default: -> (e) { raise e }
+  config.error_handle = -> (e) { Rails.env.production? ? Bugsnag.notify(e) : raise(e) } # default: -> (e) { raise e }
 end
 ```
 
