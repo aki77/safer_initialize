@@ -8,7 +8,9 @@ module SaferInitialize
           after_initialize do |object|
             unless SaferInitialize::Globals.safe?
               result = filter ? object.send(filter) : object.instance_exec(object, &block)
-              raise SaferInitialize::Error, message unless result
+              unless result
+                SaferInitialize.configuration.error_handle.call(SaferInitialize::Error.new(message))
+              end
             end
           end
         end
