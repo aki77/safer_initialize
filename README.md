@@ -24,6 +24,10 @@ In `config/initializers/safer_initialize.rb`:
 
 ```ruby
 SaferInitialize::Globals.attribute :tenant
+
+SaferInitialize.configure do |config|
+  config.error_handle = -> (e) { Rails.env.production? ? Bugsnag.notify(e) : raise e } # default: -> (e) { raise e }
+end
 ```
 
 In `app/models/project.rb`:
