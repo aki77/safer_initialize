@@ -9,7 +9,13 @@ module SaferInitialize
             unless SaferInitialize::Globals.safe?
               result = filter ? object.send(filter) : object.instance_exec(object, &block)
               unless result
-                SaferInitialize.configuration.error_handle.call(SaferInitialize::Error.new(message))
+                message_text = case message
+                               when Proc
+                                 message.call(object)
+                               else
+                                 message
+                               end
+                SaferInitialize.configuration.error_handle.call(SaferInitialize::Error.new(message_text))
               end
             end
           end
